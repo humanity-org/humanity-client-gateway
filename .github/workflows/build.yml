@@ -1,0 +1,26 @@
+# Build the humanity-client-gateway image and roll the ECS services.
+# Reusable workflow lives in humanity-org/devops; see docs/app-cicd.md there.
+name: build
+
+on:
+  push:
+    branches: [staging, production]
+
+jobs:
+  image:
+    uses: humanity-org/devops/.github/workflows/reusable-image-build.yml@main
+    with:
+      image-name: humanity-client-gateway
+      dockerfile: Dockerfile
+      build-args: |
+        VERSION=${{ github.ref_name }}
+        BUILD_NUMBER=${{ github.run_number }}
+      # Task defs reference the floating branch tag; after the push the
+      # workflow force-redeploys these services (skipped if the cluster
+      # doesn't exist yet - first bring-up follows terraform/safe/RUNBOOK.md).
+      ecs-cluster: safe-${{ github.ref_name }}
+      ecs-services: >-
+        safe-${{ github.ref_name }}-cgw-web
+    permissions:
+      id-token: write
+      contents: read
