@@ -8,7 +8,7 @@ on:
 
 jobs:
   image:
-    uses: humanity-org/devops/.github/workflows/reusable-image-build.yml@main
+    uses: humanity-org/ci-workflows/.github/workflows/reusable-image-build.yml@main
     with:
       image-name: humanity-client-gateway
       dockerfile: Dockerfile
