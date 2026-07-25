@@ -37,6 +37,13 @@ export default () => ({
     runMigrations: process.env.RUN_MIGRATIONS?.toLowerCase() !== 'false',
     port: process.env.APPLICATION_PORT || '3000',
     allowCors: process.env.ALLOW_CORS?.toLowerCase() === 'true',
+    // Comma-separated list of allowed CORS origins. When empty and CORS is
+    // enabled, all origins are reflected. Used to scope the gateway to the
+    // known frontend origin(s) in staging/production.
+    corsOrigins: (process.env.CORS_ALLOWED_ORIGINS ?? '')
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter((origin) => origin.length > 0),
   },
   auth: {
     token: process.env.AUTH_TOKEN,

@@ -21,6 +21,7 @@ export default (): ReturnType<typeof configuration> => ({
     runMigrations: true,
     port: faker.internet.port().toString(),
     allowCors: faker.datatype.boolean(),
+    corsOrigins: [],
   },
   auth: {
     token: faker.string.hexadecimal({ length: 32 }),
