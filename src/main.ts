@@ -11,13 +11,15 @@ async function bootstrap(): Promise<void> {
     configurationService.getOrThrow('application.port');
 
   if (configurationService.getOrThrow('application.allowCors')) {
-    const corsOrigins = configurationService.getOrThrow<string[]>(
+    const corsOrigins = configurationService.getOrThrow<Array<string>>(
       'application.corsOrigins',
     );
     // Scope CORS to the configured frontend origin(s). With none configured,
     // reflect all origins (dev convenience). Staging/production set
     // CORS_ALLOWED_ORIGINS so the gateway only accepts the wallet UI origin.
-    app.enableCors(corsOrigins.length > 0 ? { origin: corsOrigins } : undefined);
+    app.enableCors(
+      corsOrigins.length > 0 ? { origin: corsOrigins } : undefined,
+    );
   }
 
   await app.listen(applicationPort);
